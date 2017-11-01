@@ -68,6 +68,10 @@ function start() {
 
 function init() {
   const select = document.getElementById('rule');
+  const container = document.getElementsByTagName('body')[0];
+  const canvas = document.getElementById('canvas');
+  canvas.width = container.clientWidth;
+  canvas.height = 1000;
   rules.forEach((rule, i) => {
     const option = document.createElement('option');
     option.value = i;
