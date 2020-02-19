@@ -2,46 +2,264 @@
 
 let intervalId;
 const rules = [
-  [], // 0
-  [0x000], // 1
-  [0x001], // 2
-  [0x001,0x000], // 3
-  [0x010], // 4
-  [0x010,0x000], // 5
-  [0x010,0x001], // 6
-  [0x010,0x001,0x000], // 7
-  [0x011], // 8
-  [0x011,0x000], // 9
-  [0x011,0x001], // 10
-  [0x011,0x001,0x000], // 11
-  [0x011,0x010], // 12
-  [0x011,0x010,0x000], // 13
-  [0x011,0x010,0x001], // 14
-  [0x011,0x010,0x001,0x000], // 15
-  [0x100], // 16
-  [0x100,0x000], // 17
-  [0x100,0x001], // 18
-  [0x100,0x001,0x000], // 19
-  [0x100,0x010], // 20
-  [0x100,0x010,0x000], // 21
-  [0x100,0x010,0x001], // 22
-  [0x100,0x010,0x001,0x000], // 23
-  [0x100,0x011], // 24
-  [0x100,0x011,0x000], // 25
-  [0x100,0x011,0x001], // 26
-  [0x100,0x011,0x001,0x000], // 27
-  [0x100,0x011,0x010], // 28
-  [0x100,0x011,0x010,0x000], // 29
-  [0x100,0x011,0x010,0x001], // 30
+  (p, q, r) => 0,
+  (p, q, r) => ((1 + p) * (1 + q) * (1 + r)) % 2,
+  (p, q, r) => ((1 + p) * (1 + q) * r) % 2,
+  (p, q, r) => ((1 + p) * (1 + q)) % 2,
+  (p, q, r) => ((1 + p) * q * (1 + r)) % 2,
+  (p, q, r) => ((1 + p) * (1 + r)) % 2,
+  (p, q, r) => ((1 + p) * (q + r)) % 2,
+  (p, q, r) => ((1 + p) * (1 + q * r)) % 2,
+  (p, q, r) => ((1 + p) * q * r) % 2,
+  (p, q, r) => ((1 + p) * (1 + q + r)) % 2,
+  (p, q, r) => ((1 + p) * r) % 2,
+  (p, q, r) => ((1 + p) * (1 + q + q * r)) % 2,
+  (p, q, r) => ((1 + p) * q) % 2,
+  (p, q, r) => ((1 + p) * (1 + r + q * r)) % 2,
+  (p, q, r) => ((1 + p) * (q + r + q * r)) % 2,
+  (p, q, r) => (1 + p) % 2,
+  (p, q, r) => (p * (1 + q) * (1 + r)) % 2,
+  (p, q, r) => ((1 + q) * (1 + r)) % 2,
+  (p, q, r) => ((1 + q) * (p + r)) % 2,
+  (p, q, r) => ((1 + q) * (1 + p * r)) % 2,
+  (p, q, r) => ((p + q) * (1 + r)) % 2,
+  (p, q, r) => ((1 + p * q) * (1 + r)) % 2,
+  (p, q, r) => (p + q + r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + p * r + q * r) % 2,
+  (p, q, r) => (p + p * q + p * r + q * r) % 2,
+  (p, q, r) => (1 + q + r + p * q * r) % 2,
+  (p, q, r) => (p + p * q + r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * r + q * r) % 2,
+  (p, q, r) => (p + q + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + r + q * r) % 2,
+  (p, q, r) => (p + q + r + q * r) % 2,
+  (p, q, r) => (1 + p * q + p * r + p * q * r) % 2,
+  (p, q, r) => (p * (1 + q) * r) % 2,
+  (p, q, r) => ((1 + q) * (1 + p + r)) % 2,
+  (p, q, r) => ((1 + q) * r) % 2,
+  (p, q, r) => ((1 + q) * (1 + p + p * r)) % 2,
+  (p, q, r) => (q + p * q + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + r + p * q * r) % 2,
+  (p, q, r) => (q + p * q + r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * r + q * r) % 2,
+  (p, q, r) => ((p + q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + r + p * q * r) % 2,
+  (p, q, r) => ((1 + p * q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + p * r + q * r) % 2,
+  (p, q, r) => (q + p * q + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + r + q * r) % 2,
+  (p, q, r) => (q + p * q + r + q * r) % 2,
+  (p, q, r) => (1 + p + p * r + p * q * r) % 2,
+  (p, q, r) => (p * (1 + q)) % 2,
+  (p, q, r) => ((1 + q) * (1 + r + p * r)) % 2,
+  (p, q, r) => ((1 + q) * (p + r + p * r)) % 2,
+  (p, q, r) => (1 + q) % 2,
+  (p, q, r) => (p + q + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + r + p * r) % 2,
+  (p, q, r) => (p + q + r + p * r) % 2,
+  (p, q, r) => (1 + p * q + q * r + p * q * r) % 2,
+  (p, q, r) => (p + p * q + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + r + p * r) % 2,
+  (p, q, r) => (p + p * q + r + p * r) % 2,
+  (p, q, r) => (1 + q + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q) % 2,
+  (p, q, r) => (1 + p * q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q) % 2,
+  (p, q, r) => (p * q * (1 + r)) % 2,
+  (p, q, r) => ((1 + p + q) * (1 + r)) % 2,
+  (p, q, r) => (p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + q + p * q * r) % 2,
+  (p, q, r) => (q * (1 + r)) % 2,
+  (p, q, r) => ((1 + p + p * q) * (1 + r)) % 2,
+  (p, q, r) => (q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q + q * r) % 2,
+  (p, q, r) => (q * (p + r)) % 2,
+  (p, q, r) => (1 + p + q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q + q * r) % 2,
+  (p, q, r) => (q * (1 + p * r)) % 2,
+  (p, q, r) => (1 + p + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + p * q + p * q * r) % 2,
+  (p, q, r) => (p * (1 + r)) % 2,
+  (p, q, r) => ((1 + q + p * q) * (1 + r)) % 2,
+  (p, q, r) => (p + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q + p * r) % 2,
+  (p, q, r) => ((p + q + p * q) * (1 + r)) % 2,
+  (p, q, r) => (1 + r) % 2,
+  (p, q, r) => (p + q + p * q + r) % 2,
+  (p, q, r) => (1 + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q + r) % 2,
+  (p, q, r) => (p + r) % 2,
+  (p, q, r) => (1 + q + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + p * r) % 2,
+  (p, q, r) => (1 + r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * r) % 2,
+  (p, q, r) => (p * (q + r)) % 2,
+  (p, q, r) => (1 + p + q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q + p * r) % 2,
+  (p, q, r) => (q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q + r) % 2,
+  (p, q, r) => (q + r) % 2,
+  (p, q, r) => (1 + p + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q + r) % 2,
+  (p, q, r) => (p * q + r) % 2,
+  (p, q, r) => (1 + p + q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (q + p * r) % 2,
+  (p, q, r) => (1 + p + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q + p * r) % 2,
+  (p, q, r) => (p * (1 + q * r)) % 2,
+  (p, q, r) => (1 + q + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (p + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + q + p * q + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + q * r) % 2,
+  (p, q, r) => (1 + r + p * r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + q * r) % 2,
+  (p, q, r) => (p + q * r) % 2,
+  (p, q, r) => (1 + q + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (p + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q + q * r) % 2,
+  (p, q, r) => (p + q + p * q + p * q * r) % 2,
+  (p, q, r) => (1 + r + p * r + q * r) % 2,
+  (p, q, r) => (p + q + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + p * q * r) % 2,
+  (p, q, r) => p * q * r,
+  (p, q, r) => (1 + p + q + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => ((1 + p + q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + p * q * r) % 2,
+  (p, q, r) => (q * (1 + p + r)) % 2,
+  (p, q, r) => (1 + p + r + p * r + p * q * r) % 2,
+  (p, q, r) => (q + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q * r) % 2,
+  (p, q, r) => q * r,
+  (p, q, r) => (1 + p + q + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => ((1 + p + p * q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + q * r) % 2,
+  (p, q, r) => (q * (1 + p + p * r)) % 2,
+  (p, q, r) => (1 + p + r + p * r + q * r) % 2,
+  (p, q, r) => (q + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + p * q * r) % 2,
+  (p, q, r) => (p * (1 + q + r)) % 2,
+  (p, q, r) => (1 + q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * r) % 2,
+  (p, q, r) => (p + q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + r) % 2,
+  (p, q, r) => (p + q + r) % 2,
+  (p, q, r) => (1 + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + r) % 2,
+  (p, q, r) => (p + p * q + r) % 2,
+  (p, q, r) => (1 + q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * r) % 2,
+  (p, q, r) => (1 + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + p * r) % 2,
+  (p, q, r) => p * r,
+  (p, q, r) => (1 + p + q + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => ((1 + q + p * q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + p * r) % 2,
+  (p, q, r) => (q + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + r) % 2,
+  (p, q, r) => (q + p * q + r) % 2,
+  (p, q, r) => (1 + p + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => ((p + q + p * q) * r) % 2,
+  (p, q, r) => (1 + p + q + p * q + r) % 2,
+  (p, q, r) => r,
+  (p, q, r) => (1 + p + q + p * q + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (q + p * q + p * r) % 2,
+  (p, q, r) => (1 + p + r + q * r + p * q * r) % 2,
+  (p, q, r) => (q + p * q + r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * r) % 2,
+  (p, q, r) => (p * (1 + q + q * r)) % 2,
+  (p, q, r) => (1 + q + r + p * r + q * r) % 2,
+  (p, q, r) => (p + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + q + p * q * r) % 2,
+  (p, q, r) => (p + q + q * r) % 2,
+  (p, q, r) => (1 + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (p + q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + q * r) % 2,
+  (p, q, r) => (p + p * q + q * r) % 2,
+  (p, q, r) => (1 + q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (p + p * q + r + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + q * r) % 2,
+  (p, q, r) => (p + q + p * q * r) % 2,
+  (p, q, r) => (1 + p * q + r + p * r + q * r) % 2,
+  (p, q, r) => (p + q + r + p * r + q * r) % 2,
+  (p, q, r) => (1 + p * q + p * q * r) % 2,
+  (p, q, r) => p * q,
+  (p, q, r) => (1 + p + q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p * q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q) % 2,
+  (p, q, r) => (q * (1 + r + p * r)) % 2,
+  (p, q, r) => (1 + p + p * q + r + p * r) % 2,
+  (p, q, r) => (q + r + p * r) % 2,
+  (p, q, r) => (1 + p + p * q + q * r + p * q * r) % 2,
+  (p, q, r) => (q * (p + r + p * r)) % 2,
+  (p, q, r) => (1 + p + q + r + p * r) % 2,
+  (p, q, r) => (p * q + r + p * r) % 2,
+  (p, q, r) => (1 + p + q + q * r + p * q * r) % 2,
+  (p, q, r) => q,
+  (p, q, r) => (1 + p + p * q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q) % 2,
+  (p, q, r) => (p * (1 + r + q * r)) % 2,
+  (p, q, r) => (1 + q + p * q + r + q * r) % 2,
+  (p, q, r) => (p + r + q * r) % 2,
+  (p, q, r) => (1 + q + p * q + p * r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + p * r + q * r) % 2,
+  (p, q, r) => (1 + r + p * q * r) % 2,
+  (p, q, r) => (p + q + p * q + r + p * q * r) % 2,
+  (p, q, r) => (1 + p * r + q * r) % 2,
+  (p, q, r) => (p + p * r + q * r) % 2,
+  (p, q, r) => (1 + q + p * q + r + p * q * r) % 2,
+  (p, q, r) => (p + r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q + p * r + q * r) % 2,
+  (p, q, r) => (p + q + p * q + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + r + q * r) % 2,
+  (p, q, r) => (p + q + p * q + r + q * r) % 2,
+  (p, q, r) => (1 + p * r + p * q * r) % 2,
+  (p, q, r) => (p * (q + r + q * r)) % 2,
+  (p, q, r) => (1 + p + q + r + q * r) % 2,
+  (p, q, r) => (p * q + r + q * r) % 2,
+  (p, q, r) => (1 + p + q + p * r + p * q * r) % 2,
+  (p, q, r) => (q + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + p * q + r + p * q * r) % 2,
+  (p, q, r) => (q + r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q + p * r + q * r) % 2,
+  (p, q, r) => (p * q + p * r + q * r) % 2,
+  (p, q, r) => (1 + p + q + r + p * q * r) % 2,
+  (p, q, r) => (p * q + r + p * q * r) % 2,
+  (p, q, r) => (1 + p + q + p * r + q * r) % 2,
+  (p, q, r) => (q + p * r + p * q * r) % 2,
+  (p, q, r) => (1 + p + p * q + r + q * r) % 2,
+  (p, q, r) => q + r - q * r,
+  (p, q, r) => (1 + p + p * q + p * r + p * q * r) % 2,
+  (p, q, r) => p,
+  (p, q, r) => (1 + q + p * q + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (p + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q) % 2,
+  (p, q, r) => (p + q + p * q + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + r + p * r) % 2,
+  (p, q, r) => (p + q + p * q + r + p * r) % 2,
+  (p, q, r) => (1 + q * r + p * q * r) % 2,
+  (p, q, r) => (p + q * r + p * q * r) % 2,
+  (p, q, r) => (1 + q + p * q + r + p * r) % 2,
+  (p, q, r) => p + r - p * r,
+  (p, q, r) => (1 + q + p * q + q * r + p * q * r) % 2,
+  (p, q, r) => p + q - p * q,
+  (p, q, r) => (1 + r + p * r + q * r + p * q * r) % 2,
+  (p, q, r) => q + p * (-1 + q) * (-1 + r) + r - q * r,
+  (p, q, r) => 1,
 ];
 
-rules[48] = [0x101,0x100];
-rules[73] = [0x110,0x011,0x000];
-rules[86] = [0x110,0x100,0x010,0x001];
-rules[90] = [0x110,0x100,0x011,0x001];
-rules[121] = [0x110,0x101,0x100,0x011,0x000];
-rules[126] = [0x110,0x101,0x100,0x011,0x010,0x001];
-rules[137] = [0x111,0x011,0x000];
 
 function newBoard(n) {
   return window.crypto.getRandomValues(new Uint8Array(n)).map(x => !!(x & 1));
@@ -56,14 +274,7 @@ function drawLine(context, step, cellSize, states) {
 }
 
 function doStep(states, rule) {
-  return states.map((cur, i) => rule.apply(null, states.slice(i - 1, i + 2)));
-}
-
-function makeRule(actives) {
-  return function(prev, cur, next) {
-    const x = (prev << 8) | (cur << 4) | next;
-    return actives.indexOf(x) >= 0;
-  };
+  return states.map((element, index, array) => rule(array[index - 1] || 0, element, array[index + 1] || 0));
 }
 
 function clearCanvas(canvas) {
@@ -92,7 +303,7 @@ function start() {
   const rule = Number.parseInt(document.getElementById('rule').value);
   const N = Number.parseInt(document.getElementById('N').value);
   const rate = Number.parseInt(document.getElementById('rate').value);
-  run(canvas, N, makeRule(rules[rule]), rate);
+  run(canvas, N, rules[rule], rate);
 }
 
 function init() {
